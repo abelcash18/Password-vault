@@ -64,6 +64,7 @@
     const lockError = document.getElementById("lock-error");
     const lockTitle = document.getElementById("lock-title");
     const lockSubtitle = document.getElementById("lock-subtitle");
+    const newVaultBtn = document.getElementById("new-vault-btn");
 
     const searchInput = document.getElementById("search-input");
     const addBtn = document.getElementById("add-btn");
@@ -93,11 +94,13 @@
         lockSubtitle.textContent = "Set a strong master password. It cannot be recovered.";
         confirmGroup.style.display = "block";
         unlockBtn.textContent = "Create Vault";
+        newVaultBtn.style.display = "none";
       } else {
         lockTitle.textContent = "Password Vault";
         lockSubtitle.textContent = "Enter your master password to unlock";
         confirmGroup.style.display = "none";
         unlockBtn.textContent = "Unlock";
+        newVaultBtn.style.display = "block";
       }
     }
     checkSetup();
@@ -105,6 +108,21 @@
     unlockBtn.addEventListener("click", handleUnlock);
     masterPasswordInput.addEventListener("keydown", (e) => { if (e.key === "Enter") handleUnlock(); });
     confirmPasswordInput.addEventListener("keydown", (e) => { if (e.key === "Enter") handleUnlock(); });
+
+    newVaultBtn.addEventListener("click", () => {
+      if (!isSetup) return;
+      const confirmed = window.confirm("This will permanently delete the current vault and all entries. Create a new empty vault?");
+      if (!confirmed) return;
+      localStorage.removeItem("pv_vault");
+      localStorage.removeItem("pv_salt");
+      masterKey = null;
+      entries = [];
+      masterPasswordInput.value = "";
+      confirmPasswordInput.value = "";
+      lockError.textContent = "";
+      checkSetup();
+      masterPasswordInput.focus();
+    });
 
     async function handleUnlock() {
       const pwd = masterPasswordInput.value;
