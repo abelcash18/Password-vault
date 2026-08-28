@@ -1,3 +1,26 @@
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      navigator.serviceWorker.register("./sw.js").then((registration) => {
+        const showUpdate = (worker) => {
+          const banner = document.getElementById("update-banner");
+          const button = document.getElementById("update-btn");
+          if (!banner || !button) return;
+          banner.classList.add("show");
+          button.onclick = () => { button.disabled = true; worker.postMessage({ type: "SKIP_WAITING" }); };
+        };
+        if (registration.waiting) showUpdate(registration.waiting);
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+          if (worker) worker.addEventListener("statechange", () => {
+            if (worker.state === "installed" && navigator.serviceWorker.controller) showUpdate(worker);
+          });
+        });
+      }).catch(() => {});
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!refreshing) { refreshing = true; window.location.reload(); }
+      });
+    }
+
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
 
