@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Password Vault</title>
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#060914" />
   <meta name="description" content="A private, offline-first password vault" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
@@ -14,6 +14,9 @@
   <!-- LOCK SCREEN -->
   <div id="lock-screen">
     <div class="lock-card">
+      <button class="theme-toggle lock-theme-toggle" id="lock-theme-toggle" type="button" aria-label="Switch to light theme" title="Switch to light theme">
+        <span aria-hidden="true">☀</span>
+      </button>
       <div class="lock-icon">🔒</div>
       <h1 id="lock-title">Password Vault</h1>
       <p id="lock-subtitle">Enter your master password to unlock</p>
@@ -46,6 +49,9 @@
           <input type="text" id="search-input" placeholder="Search entries..." />
         </div>
         <button class="btn btn-primary btn-sm" id="add-btn">+ Add Entry</button>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch to light theme">
+          <span aria-hidden="true">☀</span>
+        </button>
         <button class="btn btn-secondary btn-sm" id="lock-btn">Lock</button>
       </div>
     </header>
@@ -111,6 +117,10 @@
     <span>A new version is available.</span>
     <button class="btn btn-primary btn-sm" id="update-btn" type="button">Update now</button>
   </div>
+
+   <footer class="cute-footer">
+        <p>© 2026 AbelTech Solutions</p>
+    </footer> 
 
   <script src="index.js"></script>
 </body>

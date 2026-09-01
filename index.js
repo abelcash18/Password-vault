@@ -65,6 +65,28 @@
     const lockTitle = document.getElementById("lock-title");
     const lockSubtitle = document.getElementById("lock-subtitle");
     const newVaultBtn = document.getElementById("new-vault-btn");
+    const themeToggle = document.getElementById("theme-toggle");
+    const lockThemeToggle = document.getElementById("lock-theme-toggle");
+
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem("pv_theme", theme);
+      document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#f3f6fb" : "#060914";
+      const isLight = theme === "light";
+      [themeToggle, lockThemeToggle].forEach((button) => {
+        if (!button) return;
+        button.querySelector("span").textContent = isLight ? "☾" : "☀";
+        const label = isLight ? "Switch to dark theme" : "Switch to light theme";
+        button.setAttribute("aria-label", label);
+        button.title = label;
+      });
+    }
+
+    const savedTheme = localStorage.getItem("pv_theme");
+    applyTheme(savedTheme || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    [themeToggle, lockThemeToggle].forEach((button) => button.addEventListener("click", () => {
+      applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+    }));
 
     const searchInput = document.getElementById("search-input");
     const addBtn = document.getElementById("add-btn");
